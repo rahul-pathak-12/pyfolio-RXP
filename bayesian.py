@@ -100,7 +100,7 @@ def model_returns_t_alpha_beta(data, bmark, samples=2000):
                  observed=data)
         start = pm.find_MAP(fmin=sp.optimize.fmin_powell)
         step = pm.NUTS(scaling=start)
-        trace = pm.sample(samples, step, start=start)
+        trace = pm.sample(samples, step, start=start, njobs=1)
 
     return model, trace
 
@@ -140,7 +140,7 @@ def model_returns_normal(data, samples=500):
 
         start = pm.find_MAP(fmin=sp.optimize.fmin_powell)
         step = pm.NUTS(scaling=start)
-        trace = pm.sample(samples, step, start=start)
+        trace = pm.sample(samples, step, start=start, njobs=1)
     return model, trace
 
 
@@ -184,7 +184,7 @@ def model_returns_t(data, samples=500):
 
         start = pm.find_MAP(fmin=sp.optimize.fmin_powell)
         step = pm.NUTS(scaling=start)
-        trace = pm.sample(samples, step, start=start)
+        trace = pm.sample(samples, step, start=start, njobs=1)
     return model, trace
 
 
@@ -251,7 +251,7 @@ def model_best(y1, y2, samples=1000):
         pm.Deterministic('difference of stds',
                          group2_std - group1_std)
         pm.Deterministic('effect size', diff_of_means /
-                         pm.sqrt((group1_std**2 +
+                         pm.math.sqrt((group1_std**2 +
                                   group2_std**2) / 2))
 
         pm.Deterministic('group1_annual_volatility',
@@ -270,7 +270,7 @@ def model_best(y1, y2, samples=1000):
 
         step = pm.NUTS()
 
-        trace = pm.sample(samples, step)
+        trace = pm.sample(samples, step, njobs=1)
     return model, trace
 
 
@@ -401,12 +401,12 @@ def model_stoch_vol(data, samples=2000):
         start = pm.find_MAP(vars=[s], fmin=sp.optimize.fmin_l_bfgs_b)
 
         step = pm.NUTS(scaling=start)
-        trace = pm.sample(100, step, progressbar=False)
+        trace = pm.sample(100, step, progressbar=False, njobs=1)
 
         # Start next run at the last sampled position.
         step = pm.NUTS(scaling=trace[-1], gamma=.25)
         trace = pm.sample(samples, step, start=trace[-1],
-                          progressbar=False)
+                          progressbar=False, njobs=1)
 
     return model, trace
 
