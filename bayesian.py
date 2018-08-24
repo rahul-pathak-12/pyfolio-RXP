@@ -650,4 +650,6 @@ def plot_bayes_cone(returns_train, returns_test, ppc,
     )
 
     ax.set_ylabel('Cumulative returns', fontsize=14)
+    ax.savefig( 'bayesian_file_sheet.png' )
+
     return score

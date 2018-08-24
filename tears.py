@@ -887,7 +887,9 @@ def create_bayesian_tear_sheet(returns, benchmark_rets=None,
     # Plot results
 
     fig = plt.figure(figsize=(14, 10 * 2))
-    gs = gridspec.GridSpec(9, 2, wspace=0.3, hspace=0.3)
+    print("RXP------------------------------------")
+    fig.savefig( 'bayes1.png' ) #RXP
+    #gs = gridspec.GridSpec(9, 2, wspace=0.3, hspace=0.3)
 
     axs = []
     row = 0
@@ -909,8 +911,8 @@ def create_bayesian_tear_sheet(returns, benchmark_rets=None,
     axs.append(plt.subplot(gs[row, 1]))
     row += 1
     # Effect size across two
-    axs.append(plt.subplot(gs[row, :]))
 
+    axs.append(plt.subplot(gs[row, :]))
     bayesian.plot_best(trace=trace_best, axs=axs)
     previous_time = timer("plotting BEST results", previous_time)
 
@@ -1005,7 +1007,6 @@ def create_bayesian_tear_sheet(returns, benchmark_rets=None,
 
     gs.tight_layout(fig)
 
-    fig.savefig( 'bayesian_tear_sheet.png' )
     plt.show()
 
     if return_fig:
